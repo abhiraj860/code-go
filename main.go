@@ -2,33 +2,18 @@ package main
 
 import "fmt"
 
-type base struct {
-	num int
-}
-
-func (b base) describe() string {
-	return fmt.Sprintf("base with num = %v", b.num)
-}
-
-type container struct {
-	base
-	str string
+func SlicesIndex[S ~[]E, E comparable] (s S, v E) int {
+	for i := range s {
+		if v == s[i] {
+			return i
+		}
+	}
+	return -1
 }
 
 func main() {
-	co := container {
-		base: base{
-			num: 1,
-		},
-		str: "Abhiraj",
-	}
+	var s = []string{"foo", "bar", "zoo"}
 
-	fmt.Printf("co={num; %v, str: %v}\n", co.num, co.str)
-	fmt.Println("also num", co.base.num)
-	fmt.Println("describe: ", co.describe())
-	type describer interface {
-		describe() string
-	}
-	var d describer = co
-	fmt.Println("describer: ", d.describe())
+	fmt.Println("index of zoo: ", SlicesIndex(s, "zoo"))
+	_ = SlicesIndex[[]string, string](s, "zoo")
 }
