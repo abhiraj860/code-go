@@ -2,17 +2,17 @@ package main
 
 import "fmt"
 
+type Person struct {
+	name string
+	age int
+}
+
+func initPerson() *Person {
+	p := Person{name:"Abhiraj", age: 56}
+	fmt.Printf("%p\n", &p)
+	return &p
+}
+
 func main() {
- i, j := 42, 2701
- fmt.Println(&i, &j)
- 
- p := &i
-
- fmt.Println(*p)
- *p = 21
- fmt.Println(i)
-
- p = &j
- *p = *p / 37
- fmt.Println(j)
+	fmt.Printf("%p\n", initPerson())
 }
