@@ -5,21 +5,27 @@ import (
 	"sync"
 )
 
-func say(s string, wg * sync.WaitGroup) {
-	defer wg.Done()
-	for i := 0; i < 5; i++ {
-		fmt.Println(s)
-	}
+func main() {
+	fmt.Println("Total Items Packet:", PackItems(0))
 }
 
-func main() {
+func PackItems(totalItem int) int {
+	const workers = 2
+	const itemsPerWorker = 1000
 
 	wg := sync.WaitGroup{}
-	wg.Add(2)
-
-	go say("Hello", &wg)
-	go say("World", &wg)
-
+	itemsPacked := 0
+	for i := 0; i < workers; i++ {
+		wg.Add(1)
+		go func(workerID int) {
+			defer wg.Done()
+			for j := 0; j < itemsPerWorker; j++ {
+				itemsPacked = totalItem
+				itemsPacked++
+				totalItem = itemsPacked
+			}
+		}(i)
+	}
 	wg.Wait()
-	fmt.Println("Finish")
+	return totalItem
 }
