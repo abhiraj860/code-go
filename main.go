@@ -1,12 +1,20 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"sync"
 )
 
 func main() {
-	fmt.Println("Total Items Packet:", PackItems(0))
+	times := 0
+	for {
+		times++
+		value := PackItems(0)
+		if value != 2000 {
+			log.Fatalf("if should be 2000 but but found %d on execution of counter %d", value, times)
+			break
+		}
+	}
 }
 
 func PackItems(totalItem int) int {
@@ -28,7 +36,6 @@ func PackItems(totalItem int) int {
 		}(i)
 	}
 
-	
 	wg.Wait()
 	return totalItem
 }
