@@ -14,5 +14,5 @@ func say(s string ) {
 
 func main() {
 	say("Hell0")
-	say("golang")
+	go say("golang")
 }
