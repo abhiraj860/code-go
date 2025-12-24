@@ -15,6 +15,7 @@ func PackItems(totalItem int) int {
 
 	wg := sync.WaitGroup{}
 	itemsPacked := 0
+
 	for i := 0; i < workers; i++ {
 		wg.Add(1)
 		go func(workerID int) {
@@ -26,6 +27,8 @@ func PackItems(totalItem int) int {
 			}
 		}(i)
 	}
+
+	
 	wg.Wait()
 	return totalItem
 }
