@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"runtime"
 	"sync"
 )
 
@@ -31,6 +32,7 @@ func PackItems(totalItem int) int {
 			for j := 0; j < itemsPerWorker; j++ {
 				itemsPacked = totalItem
 				itemsPacked++
+				runtime.Gosched()
 				totalItem = itemsPacked
 			}
 		}(i)
