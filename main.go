@@ -1,44 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"sync"
-	"time"
+	"fmt"
 )
 
 func main() {
-	clownChannel := make(chan int, 3)
-
-	clowns := 5
-
-	// sender and receiver logic here
+	signalChannel := make(chan bool)
+	wg := sync.WaitGroup{}
 	
-	var wg sync.WaitGroup
+	wg.Add(1)
 	go func() {
-		defer close(clownChannel)
-		for clownId := range clownChannel {
-			balloon := fmt.Sprintf("Ballon %d", clownId)
-			fmt.Printf("Driver: Drove the car with %s inside \n", balloon)
-			time.Sleep(50000 * time.Millisecond)
-			fmt.Printf("Driver: Clown finished with %s, the car is ready for more \n", balloon)
-		}
-	}()
-	
-	for clown := 1; clown <= clowns; clown++ {
-		wg.Add(1)
-		go func(clownId int) {
-			defer wg.Done()
-			balloon := fmt.Sprintf("Balloon %d", clownId)
-			fmt.Printf("Clown %d: Hoppend into car with %s \n", clownId, balloon)
-			select {
-			case clownChannel <- clownId:
-				fmt.Printf("Clown %d: Finished with %s\n", clownId,balloon)
-			default:
-				fmt.Printf("clown %d: Oops the car is filled can fit %s!\n", clownId, balloon)
-			}
-		}(clown)
-	}
+		defer wg.Done()
+		fmt.Println("Goroutine 1 is waiting for signal...")
+		<-signalChannel
+		fmt.Println("Gorouting 1 received the signal and is now doing something")
+	} ()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		fmt.Println("Goroutine 2 is about to send a signal...")
+		signalChannel <- true
+		fmt.Println("Gourouting 2 send the signal.")
+	} ()
 	wg.Wait()
-	
-	fmt.Println("Circus ride is over!!")
+	fmt.Println("Both goroutines have finished")
 }
