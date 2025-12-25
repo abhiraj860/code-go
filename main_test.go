@@ -1,13 +1,18 @@
 package main
 
-import "testing"
+import (
+	"sync/atomic"
+	"testing"
+)
 
 func TestRaceCondition(t *testing.T) {
 	var state int32
 
+	// atomic
 	for i := 0; i < 10; i++ {
-		go func() { 
-			state += int32(i) 
+		go func() {
+			atomic.AddInt32(&state, int32(i))
+			// state += int32(i)
 		}()
 	}
 }
