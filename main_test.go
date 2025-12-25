@@ -3,9 +3,9 @@ package main
 import "testing"
 
 func TestPackItems(t *testing.T) {
-	totalItems := PackItems(2000)
+	totalItems := PackItems(0)
 	expectedTotal := 2000
-	if totalItems != int32(expectedTotal) {
+	if totalItems != expectedTotal {
 		t.Errorf("Expected total: %d, Actual value %d", expectedTotal, totalItems)
 	}
 }
