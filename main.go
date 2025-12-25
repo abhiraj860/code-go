@@ -3,33 +3,42 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
-func throwBall(color string, ch chan string) {
-	fmt.Printf("Sending %s in the channel\n", color)
-	ch <- color
-}
-
 func main() {
-	balls := make(chan string)
+	clownChannel := make(chan int, 3)
 
-	wg := sync.WaitGroup{}
-	wg.Add(2)
+	clowns := 5
 
-	go func() {
-		defer wg.Done()
-		throwBall("red", balls)
-	}()
-	go func() {
-		defer wg.Done()
-		throwBall("Green", balls)
-	}()
-	go func() {
-		wg.Wait()
-		close(balls)
-	} ()
+	// sender and receiver logic here
 	
-	for color := range balls {
-		fmt.Println(color, "received")
+	var wg sync.WaitGroup
+	go func() {
+		defer close(clownChannel)
+		for clownId := range clownChannel {
+			balloon := fmt.Sprintf("Ballon %d", clownId)
+			fmt.Printf("Driver: Drove the car with %s inside \n", balloon)
+			time.Sleep(50000 * time.Millisecond)
+			fmt.Printf("Driver: Clown finished with %s, the car is ready for more \n", balloon)
+		}
+	}()
+	
+	for clown := 1; clown <= clowns; clown++ {
+		wg.Add(1)
+		go func(clownId int) {
+			defer wg.Done()
+			balloon := fmt.Sprintf("Balloon %d", clownId)
+			fmt.Printf("Clown %d: Hoppend into car with %s \n", clownId, balloon)
+			select {
+			case clownChannel <- clownId:
+				fmt.Printf("Clown %d: Finished with %s\n", clownId,balloon)
+			default:
+				fmt.Printf("clown %d: Oops the car is filled can fit %s!\n", clownId, balloon)
+			}
+		}(clown)
 	}
+	wg.Wait()
+	
+	fmt.Println("Circus ride is over!!")
 }
