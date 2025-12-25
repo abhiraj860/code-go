@@ -2,49 +2,13 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
-type Message struct {
-	from     string
-	payloads string
-}
-
-type Server struct {
-	msgch chan Message
-}
-
-func (s *Server) StartAndListen() {
-	for {
-		select {
-		case msg := <-s.msgch:
-			// block here until someone is sending a message to a channel
-			fmt.Printf("received message for %s payloads %s\n", msg.from, msg.payloads)
-		default:
-
-		}
-	}
-}
-
-func sendMessageToServer(msgch chan Message, payloadInp string) {
-	msg := Message{
-		from:     "YoBuyDm",
-		payloads: payloadInp,
-	}
-	msgch <- msg
-}
-
 func main() {
-	s := Server{
-		msgch: make(chan Message),
-	}
-	go s.StartAndListen()
-	go func() {
-		time.Sleep(2 * time.Second)
-		sendMessageToServer(s.msgch, "Hello Sailor")
-	}()
-	select {}
+	fmt.Println("Abe")
 }
+
+
 
 // func main() {
 // 	now := time.Now()
