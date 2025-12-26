@@ -2,30 +2,22 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
-func someFunc(num string) {
-	fmt.Println(num)
+func dowork(done <-chan bool) {
+	for {
+		select {
+		case <-done:
+			return
+		default:
+			fmt.Println("DOING_WORK")
+		}
+	}
 }
 
 func main() {
-	mych := make(chan string)
-	anotherChannel := make(chan string)
-
-	go func() {
-		mych <- "data"
-	} ()
-
-	go func() {
-		anotherChannel <- "cow"
-	} ()	
-
-	select {
-	case msg:= <-mych:
-		fmt.Println(msg)
-	case anotherChannelmsg := <-anotherChannel:
-		fmt.Println(anotherChannelmsg)
-	}
-
+	done := make(chan bool)
+	go dowork(done)
+	time.Sleep(3 * time.Second)
 }
-
