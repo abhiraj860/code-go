@@ -5,12 +5,7 @@ import (
 	"os"
 )
 
-func main() {
-	words := os.Args[1:]
-	if len(words) == 0 {
-		fmt.Fprintln(os.Stderr, "No words provided.")
-		os.Exit(1)
-	}
+func app(words []string) {
 	for _,w := range words {
 		if len(w) % 2 == 0 {
 			fmt.Fprintf(os.Stdout, "word %s is even \n", w)
@@ -18,4 +13,13 @@ func main() {
 			fmt.Fprintf(os.Stderr, "word %s is odd \n", w)
 		}
 	}
+}
+
+func main() {
+	words := os.Args[1:]
+	if len(words) == 0 {
+		fmt.Fprintln(os.Stderr, "No words provided.")
+		os.Exit(1)
+	}
+	app(words)
 }
