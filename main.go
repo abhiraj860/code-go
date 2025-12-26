@@ -1,31 +1,20 @@
+// Declare the main package
 package main
 
+// Import the fmt, io, and os package
 import (
 	"fmt"
 	"io"
 	"os"
 )
 
-type Option func(*CliConfig) error
-
-func WithErrStream(errStream io.Writer) Option {
-	return func(c *CliConfig) error {
-		c.ErrStream = errStream
-		return nil
-	}
-}
-
-func WithOutStream(outStream io.Writer) Option {
-	return func(c *CliConfig) error {
-		c.OutStream = outStream
-		return nil
-	}
-}
-
+// Declares the CliConfig struct having the ErrStream and Outstream
 type CliConfig struct {
 	ErrStream io.Writer
 	OutStream io.Writer
 }
+
+type Option func(*CliConfig) error
 
 func NewCliConfig(opt ...Option) (CliConfig, error) {
 	c := CliConfig{
@@ -41,6 +30,22 @@ func NewCliConfig(opt ...Option) (CliConfig, error) {
 
 	return c, nil
 }
+
+func WithErrStream(errStream io.Writer) Option {
+	return func(c *CliConfig) error {
+		c.ErrStream = errStream
+		return nil
+	}
+}
+
+func WithOutStream(outStream io.Writer) Option {
+	return func(c *CliConfig) error {
+		c.OutStream = outStream
+		return nil
+	}
+}
+
+
 
 func app(words []string, cfg CliConfig) {
 	for _, w := range words {
