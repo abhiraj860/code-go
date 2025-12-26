@@ -2,22 +2,20 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"os"
 )
 
-func dowork(done <-chan bool) {
-	for {
-		select {
-		case <-done:
-			return
-		default:
-			fmt.Println("DOING_WORK")
+func main() {
+	words := os.Args[1:]
+	if len(words) == 0 {
+		fmt.Fprintln(os.Stderr, "No words provided.")
+		os.Exit(1)
+	}
+	for _,w := range words {
+		if len(w) % 2 == 0 {
+			fmt.Fprintf(os.Stdout, "word %s is even \n", w)
+		} else {
+			fmt.Fprintf(os.Stderr, "word %s is odd \n", w)
 		}
 	}
-}
-
-func main() {
-	done := make(chan bool)
-	go dowork(done)
-	time.Sleep(3 * time.Second)
 }
