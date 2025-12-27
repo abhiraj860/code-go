@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	uncleanPath := "/home/user/../documents/file.txt"
-	cleanPath := filepath.Clean(uncleanPath)
-	fmt.Println("Cleaned Path is: ", cleanPath)
+	path := "/home/user/documents/myfile.txt"
+	dir, file := filepath.Split(path)
+	fmt.Println("Directory: ", dir)
+	fmt.Println("File: ", file)
 }
