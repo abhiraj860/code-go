@@ -2,22 +2,13 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"path/filepath"
 )
 
 func main() {
-	fileInfo, err := os.Stat("../Buffers/huge-allocation.s")
+	dir := "/home/user"
+	file := "document.txt"
 
-	if err != nil {
-		if os.IsNotExist(err) {
-			fmt.Println("File does not exist")
-			return
-		}
-		fmt.Println("Error: ", err)
-		return
-	}
-	
-	permissions := fileInfo.Mode().Perm()
-	permissionString := fmt.Sprintf("%o", permissions)
-	fmt.Printf("Permission %s\n", permissionString)
+	fullPath := filepath.Join(dir, file)
+	fmt.Println("Full path:", fullPath)
 }
