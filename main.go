@@ -63,9 +63,14 @@ func main() {
 	flag.StringVar(&outputFileName, "f", "", "Output file (default:stdout)")
 	flag.Parse()
 	
-	fmt.Println(outputFileName)	
-	words := os.Args[1:]
-	if len(words) == 0 {
+	directories := os.Args[1:]
+	
+	if len(outputFileName) != 0 {
+		directories = os.Args[3:]
+	}
+	fmt.Println(directories)	
+	
+	if len(directories) == 0 {
 		fmt.Fprintf(os.Stderr, "No words provided")
 		os.Exit(1) 
 		}	
@@ -84,5 +89,5 @@ func main() {
 	} else {
 		outputWriter = cfg.OutStream
 	}
-	app(words, outputWriter)
+	app(directories, outputWriter)
 }
